@@ -4,8 +4,9 @@ from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
 import time
+import csv
 
-def main(month, year, game_type):
+def main(month, year, game_type, csv_writer):
     now = datetime.now()
    
     today = str(now.month) + '.' + str(now.day) + '.' + str(now.year)
@@ -49,8 +50,14 @@ def main(month, year, game_type):
                     away = td[1].find_all('span')[1].text
                     away_score = td[1].find('strong').text.split(':')[0]      
                 print("{}월 {}일 경기 결과 {}팀 {}점 VS {}팀 {}점".format(g_month, g_day,home, home_score , away, away_score))
+                csv_writer.writerow([g_month, g_day, home, home_score])
+                csv_writer.writerow([g_month, g_day, away, away_score])
+                
 
 if __name__ == "__main__":
-    main(11, 2016, "kbl")
+    f = open('kbl_score.csv', 'a')
+    csv_writer = csv.writer(f)
+    main(11, 2016, "kbl", csv_writer)
+    f.close()
     
    
