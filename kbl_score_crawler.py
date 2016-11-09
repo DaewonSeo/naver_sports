@@ -41,21 +41,22 @@ def main(month, year, game_type, csv_writer):
                     home = td[2].find_all('span')[0].text
                     home_score = td[2].find('strong').text.split(':')[0]
                     away = td[2].find_all('span')[1].text
-                    away_score = td[2].find('strong').text.split(':')[0]          
-
+                    away_score = td[2].find('strong').text.split(':')[0]
+                    game_id = td[3].find('a')['href'].split('=')[-1]
                 else:
                     time = td[0].text
                     home = td[1].find_all('span')[0].text
                     home_score = td[1].find('strong').text.split(':')[0]
                     away = td[1].find_all('span')[1].text
-                    away_score = td[1].find('strong').text.split(':')[0]      
-                print("{}월 {}일 경기 결과 {}팀 {}점 VS {}팀 {}점".format(g_month, g_day,home, home_score , away, away_score))
-                csv_writer.writerow([g_month, g_day, home, home_score])
-                csv_writer.writerow([g_month, g_day, away, away_score])
+                    away_score = td[1].find('strong').text.split(':')[0]
+                    game_id = td[2].find('a')['href'].split('=')[-1]
+                print("{}월 {}일 {}경기 결과 {}팀 {}점 VS {}팀 {}점".format(g_month, g_day, game_id, home, home_score , away, away_score))
+                csv_writer.writerow([g_month, g_day, game_id, home, home_score])
+                csv_writer.writerow([g_month, g_day, game_id, away, away_score])
                 
 
 if __name__ == "__main__":
-    f = open('kbl_score.csv', 'a')
+    f = open('kbl_score_2016.csv', 'a')
     csv_writer = csv.writer(f)
     main(11, 2016, "kbl", csv_writer)
     f.close()
